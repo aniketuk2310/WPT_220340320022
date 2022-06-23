@@ -1,0 +1,73 @@
+<html>
+
+<body>
+
+	<form action="book" method="get">
+		<br>Book Id <input type="text" name="whocares" id="id" />
+		<span id="msg">Message...?</span><br>
+		<br>Book Name <input type="text" name="whocares" id="name" /><br>
+		<br>Price <input type="text" name="whocares" id="price" /><br>
+	</form>
+
+	<button id="b1">Update Book</button>
+
+
+</body>
+
+<script src="jquery-3.5.1.min.js"></script>
+
+<script>
+
+	$(() => {
+		$("#id").blur(() => {
+			let input = { id: $("#id").val() };
+			$.ajax({
+				data: input,
+				url: "http://localhost:8081/getInfo",
+				type: 'get',
+				datatype: 'json',
+				success: (data) => {
+					if (data.status) {
+						console.log("Details fetched successfully..!!");
+						$("#msg").text("Book id Found");
+						$("#name").val(data.name);
+						$("#price").val(data.price);
+					} else {
+						console.log("Details Not found..!!");
+						$("#msg").text("Book Not id Found");
+						$("#name").val("");
+						$("#price").val("");
+					}
+				},
+				error: (error) => {
+					console.log(error);
+				}
+			});
+		});
+
+		$("#b1").click(() => {
+			let input = { id: $("#id").val(), name: $("#name").val(), price: $("#price").val() };
+			$.ajax({
+				data: input,
+				url: "http://localhost:8081/updateInfo",
+				type: 'get',
+				datatype: 'json',
+				success: (data) => {
+					if (data.status) {
+						console.log("Details updated successfully..!!");
+						$("#msg").text("Price is Updated..!!");
+					} else {
+						console.log("Details Not found..!!");
+						$("#msg").val("Cannot update Price..!!");
+					}
+				},
+				error: (error) => {
+					console.log(error);
+				}
+			});
+		});
+	});
+
+</script>
+
+</html>
